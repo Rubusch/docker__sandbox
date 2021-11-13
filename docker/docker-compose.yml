@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+    sandbox:
+        container_name: sandbox
+        image: ${USER}/sandbox:20211028
+        build:
+            context: build_context
+            dockerfile: Dockerfile
+            args:
+                USER: "${USER}"
+                UID: "${UID}"
+                GID: "${GID}"
+        user: "${UID}:${GID}"
+        stdin_open: true          ## docker run -i
+        tty: true                 ## docker run -t
+        #privileged: true
+        environment:
+          - USER
+        env_file:
+          - .env
+        volumes:
+          ## folder can be around
+          - ~/.gitconfig:/home/$USER/.gitconfig:ro
+          #- ~/.ssh:/home/${USER}/.ssh
+          ## actually bind mount .ssh to update known_hosts
+          - ./workspace:/home/${USER}/workspace
+          ## folder must be around
+          - type: bind
+            source: ~/.ssh
+            target: /home/${USER}/.ssh
+          - type: bind
+            source: ./build_configs
+            target: /home/$USER/configs

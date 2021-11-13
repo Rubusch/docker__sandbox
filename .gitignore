@@ -1,0 +1,13 @@
+## backups
+*~
+*#
+*.orig
+
+## ignore output folder
+workspace
+
+## docker multistage build
+sandbox
+
+## docker environment
+.env
