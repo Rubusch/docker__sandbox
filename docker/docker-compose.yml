@@ -3,7 +3,7 @@ version: '3.8'
 services:
     sandbox:
         container_name: sandbox
-        image: ${USER}/sandbox:DEVEL
+        image: ${USER}/sandbox:20221228
         build:
             context: build_context
             dockerfile: Dockerfile
