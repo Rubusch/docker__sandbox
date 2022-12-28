@@ -3,22 +3,18 @@ version: '3.8'
 services:
     sandbox:
         container_name: sandbox
-        image: ${USER}/sandbox:20211028
+        image: ${USER}/sandbox:DEVEL
         build:
             context: build_context
             dockerfile: Dockerfile
             args:
                 USER: "${USER}"
-                UID: "${UID}"
-                GID: "${GID}"
-        user: "${UID}:${GID}"
+        user: "${USER}"
         stdin_open: true          ## docker run -i
         tty: true                 ## docker run -t
         #privileged: true
         environment:
           - USER
-        env_file:
-          - .env
         volumes:
           ## folder can be around
           - ~/.gitconfig:/home/$USER/.gitconfig:ro

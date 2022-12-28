@@ -6,9 +6,6 @@ ENV DEBIAN_FRONTEND=noninteractive
 ################################################################################
 ## the USER is needed to make it available as --build-arg
 ARG USER="${USER}"
-ARG GID="${GID}"
-ARG UID="${UID}"
-
 ENV MY_CONFIGS="/home/$USER/configs"
 
 
@@ -108,14 +105,14 @@ RUN locale-gen
 ################################################################################
 ## user settings
 USER root
-RUN groupadd -g "$GID" "$USER"
-RUN useradd -m -u "$UID" -g "$GID" -s /bin/bash "$USER"
+RUN useradd -m -s /bin/bash "$USER"
 RUN usermod -a -G sudo "$USER"
 RUN sed -i '/%sudo/s/.*/%sudo   ALL=NOPASSWD: ALL/' /etc/sudoers
 RUN mkdir -p /usr/local
 RUN chown -R "${USER}":"${USER}" /usr/local
 RUN mkdir -p /opt
 RUN chown -R "${USER}":"${USER}" /opt
+RUN adduser "$USER" dialout
 
 
 ################################################################################
