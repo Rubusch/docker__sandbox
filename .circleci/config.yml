@@ -11,4 +11,4 @@ jobs:
       - run: sudo usermod -aG docker $USER
       ## build base container (multistage build)
       - checkout
-      - run: cd ./docker && echo "UID=$(id -u)" > .env && echo "GID=$(id -g)" >> .env && docker-compose up --exit-code-from sandbox
+      - run: cd ./docker && docker-compose up --exit-code-from sandbox
