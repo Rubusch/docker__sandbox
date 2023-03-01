@@ -24,6 +24,8 @@ $ sudo usermod -aG docker $USER
 ## Build
 
 ```
+$ echo "UID=$(id -u)" > ./docker/.env
+$ echo "GID=$(id -g)" >> ./docker/.env
 $ cd ./docker
 $ docker-compose up
 ```

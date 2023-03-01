@@ -6,13 +6,15 @@ ENV DEBIAN_FRONTEND=noninteractive
 ################################################################################
 ## the USER is needed to make it available as --build-arg
 ARG USER="${USER}"
+ARG GID="${GID}"
+ARG UID="${UID}"
 ENV MY_CONFIGS="/home/$USER/configs"
 
 
 ################################################################################
 ## set up apt fully functional
 USER root
-RUN apt-get update && apt-get upgrade -y && apt-get autoremove -y --purge
+RUN apt-get update && apt-get autoremove -y --purge
 
 ## container essentials - linux build, patch creation
 RUN apt-get install -y locales \
@@ -82,8 +84,7 @@ RUN apt-get install -y chrpath \
 	screen \
 	x11-apps \
 	emacs-goodies-el \
-	emacs-goodies-extra-el \
-	exuberant-ctags
+	emacs-goodies-extra-el
 
 ## special - git
 RUN apt-get install -y git-all
@@ -105,7 +106,8 @@ RUN locale-gen
 ################################################################################
 ## user settings
 USER root
-RUN useradd -m -s /bin/bash "$USER"
+RUN groupadd -g "$GID" "$USER"
+RUN useradd -m -u "$UID" -g "$GID" -s /bin/bash "$USER"
 RUN usermod -a -G sudo "$USER"
 RUN sed -i '/%sudo/s/.*/%sudo   ALL=NOPASSWD: ALL/' /etc/sudoers
 RUN mkdir -p /usr/local
